@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComfyUI 配置管理</title>
+    <link rel="stylesheet" href="comfyui-settings.css">
+</head>
+<body>
+    <div class="comfyui-container">
+        <!-- 头部工具栏 -->
+        <div class="header-toolbar">
+            <div class="title-section">
+                <h1>ComfyUI 配置管理</h1>
+                <div class="connection-status" id="connectionStatus">
+                    <span class="status-indicator" id="statusIndicator"></span>
+                    <span class="status-text" id="statusText">未连接</span>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" id="resetConfigBtn">重置配置</button>
+                <button class="btn btn-primary" id="saveConfigBtn">保存配置</button>
+                <button class="btn btn-success" id="testConnectionBtn">测试连接</button>
+            </div>
+        </div>
+
+        <!-- 主要配置区域 -->
+        <div class="config-content">
+            <!-- 连接设置 -->
+            <div class="config-section">
+                <h2>服务器连接</h2>
+                <div class="form-group">
+                    <label for="serverUrl">ComfyUI 服务器地址</label>
+                    <input type="text" 
+                           id="serverUrl" 
+                           class="form-control" 
+                           placeholder="http://localhost:8188"
+                           value="http://localhost:8188">
+                </div>
+                <div class="form-group">
+                    <label for="apiKey">API Key（可选）</label>
+                    <input type="password" 
+                           id="apiKey" 
+                           class="form-control" 
+                           placeholder="请输入API密钥">
+                </div>
+            </div>
+
+            <!-- 模型配置 -->
+            <div class="config-section">
+                <h2>模型设置</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="modelName">主模型</label>
+                        <div class="input-with-button">
+                            <select id="modelName" class="form-control">
+                                <option value="">请选择模型...</option>
+                            </select>
+                            <button class="btn btn-outline" id="loadModelsBtn">加载模型</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="loraName">LoRA 模型</label>
+                        <div class="input-with-button">
+                            <select id="loraName" class="form-control">
+                                <option value="">无（可选）</option>
+                            </select>
+                            <button class="btn btn-outline" id="loadLorasBtn">加载LoRA</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 工作流配置 -->
+            <div class="config-section">
+                <h2>工作流设置</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="workflow">工作流模板</label>
+                        <div class="input-with-button">
+                            <select id="workflow" class="form-control">
+                                <option value="text2img_basic">基础文生图</option>
+                            </select>
+                            <button class="btn btn-outline" id="refreshWorkflowsBtn">刷新</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 生成参数 -->
+            <div class="config-section">
+                <h2>生成参数</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="width">宽度</label>
+                        <input type="range" 
+                               id="width" 
+                               class="form-range" 
+                               min="64" 
+                               max="4096" 
+                               step="64" 
+                               value="1024">
+                        <span class="range-value" id="widthValue">1024</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="height">高度</label>
+                        <input type="range" 
+                               id="height" 
+                               class="form-range" 
+                               min="64" 
+                               max="4096" 
+                               step="64" 
+                               value="1024">
+                        <span class="range-value" id="heightValue">1024</span>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="steps">采样步数</label>
+                        <input type="range" 
+                               id="steps" 
+                               class="form-range" 
+                               min="1" 
+                               max="150" 
+                               value="20">
+                        <span class="range-value" id="stepsValue">20</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="cfgScale">CFG 引导强度</label>
+                        <input type="range" 
+                               id="cfgScale" 
+                               class="form-range" 
+                               min="0.1" 
+                               max="30" 
+                               step="0.1" 
+                               value="7.0">
+                        <span class="range-value" id="cfgScaleValue">7.0</span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="samplerName">采样器</label>
+                        <select id="samplerName" class="form-control">
+                            <option value="euler">Euler</option>
+                            <option value="euler_ancestral">Euler Ancestral</option>
+                            <option value="dpm_2">DPM++ 2M</option>
+                            <option value="dpm_2_ancestral">DPM++ 2M Ancestral</option>
+                            <option value="lms">LMS</option>
+                            <option value="ddim">DDIM</option>
+                            <option value="uni_pc">UniPC</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduler">调度器</label>
+                        <select id="scheduler" class="form-control">
+                            <option value="normal">Normal</option>
+                            <option value="karras">Karras</option>
+                            <option value="exponential">Exponential</option>
+                            <option value="sgm_uniform">SGM Uniform</option>
+                            <option value="simple">Simple</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="seed">随机种子</label>
+                        <div class="input-with-button">
+                            <input type="number" 
+                                   id="seed" 
+                                   class="form-control" 
+                                   value="156680208700286">
+                            <button class="btn btn-outline" id="randomSeedBtn">随机</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 提示词设置 -->
+            <div class="config-section">
+                <h2>提示词设置</h2>
+                <div class="form-group">
+                    <label for="negativePrompt">负面提示词</label>
+                    <textarea id="negativePrompt" 
+                              class="form-control textarea" 
+                              rows="4" 
+                              placeholder="描述不想在图像中出现的内容...">lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry</textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-info">
+                <span id="lastSaved">配置尚未保存</span>
+            </div>
+            <div class="status-actions">
+                <button class="btn btn-link" id="exportConfigBtn">导出配置</button>
+                <button class="btn btn-link" id="importConfigBtn">导入配置</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模态框组件 -->
+    <div class="modal-overlay" id="modalOverlay" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">选择模型</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="search-box">
+                    <input type="text" 
+                           id="modalSearch" 
+                           class="form-control" 
+                           placeholder="搜索模型...">
+                </div>
+                <div class="model-list" id="modalList">
+                    <!-- 动态生成的列表项 -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="modalCancel">取消</button>
+                <button class="btn btn-primary" id="modalConfirm">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 消息提示 -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="comfyui-settings.js"></script>
+</body>
+</html>

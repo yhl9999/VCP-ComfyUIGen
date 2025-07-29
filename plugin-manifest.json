@@ -1,0 +1,53 @@
+{
+  "manifestVersion": "1.0.0",
+  "name": "ComfyUIGen",
+  "displayName": "ComfyUI 图像生成器",
+  "version": "0.2.0",
+  "description": "通过 ComfyUI API 使用自定义工作流生成图像。支持与 VCPChat 前端集成，用户可配置模型、LoRA、参数等，Agent 只需生成创意性提示词。",
+  "author": "Kilo Code",
+  "pluginType": "synchronous",
+  "entryPoint": {
+    "type": "nodejs",
+    "command": "node ComfyUIGen.js"
+  },
+  "communication": {
+    "protocol": "stdio",
+    "timeout": 300000
+  },
+  "configSchema": {
+    "COMFYUI_BASE_URL": {
+      "type": "string",
+      "description": "ComfyUI服务器地址（可通过VCPChat前端配置覆盖）",
+      "default": "http://localhost:8188"
+    },
+    "COMFYUI_API_KEY": {
+      "type": "string",
+      "description": "ComfyUI API密钥（可通过VCPChat前端配置覆盖）",
+      "default": ""
+    },
+    "DEFAULT_WORKFLOW": {
+      "type": "string", 
+      "description": "默认工作流模板名称（可通过VCPChat前端配置覆盖）",
+      "default": "text2img_basic"
+    },
+    "MAX_QUEUE_CHECK_ATTEMPTS": {
+      "type": "number",
+      "description": "队列检查最大尝试次数",
+      "default": 60
+    },
+    "QUEUE_CHECK_INTERVAL": {
+      "type": "number",
+      "description": "队列检查间隔（毫秒）",
+      "default": 3000
+    }
+  },
+  "capabilities": {
+    "invocationCommands": [
+      {
+        "commandIdentifier": "ComfyUIGenerateImage",
+        "description": "调用此工具通过ComfyUI生成图像。\n\n工作原理：\n- Agent负责：生成创意性的正面提示词\n- 用户配置：通过VCPChat前端设置模型、LoRA、尺寸、采样器等技术参数\n- 后端整合：自动合并Agent提示词和用户配置\n\n必需参数：\n- prompt (字符串): 正面提示词，描述想要生成的图像内容\n\n可选参数：\n- negative_prompt (字符串): 负面提示词，描述不想要的元素\n- workflow (字符串): 指定特定工作流模板\n\n注意：所有技术参数（模型、LoRA、尺寸等）都由用户在VCPChat前端配置，Agent无需关心。\n\n生成完成后会提供HTML img标签用于显示图片。",
+        "example": "<<<[TOOL_REQUEST]>>>\ntool_name:「始」ComfyUIGen「末」,\nprompt:「始」a beautiful sunset over mountains, highly detailed, photorealistic「末」\n<<<[END_TOOL_REQUEST]>>>"
+      }
+    ]
+  }
+}

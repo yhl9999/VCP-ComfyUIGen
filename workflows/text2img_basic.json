@@ -1,0 +1,269 @@
+{
+"3": {
+        "inputs": {
+            "seed": "%seed%",
+            "steps": "%steps%",
+            "cfg": "%cfg_scale%",
+            "sampler_name": "%sampler_name%",
+            "scheduler": "normal",
+            "denoise": 1,
+            "model": [
+                "42",
+                0
+            ],
+            "positive": [
+                "125",
+                2
+            ],
+            "negative": [
+                "125",
+                3
+            ],
+            "latent_image": [
+                "5",
+                0
+            ]
+        },
+        "class_type": "KSampler",
+        "_meta": {
+            "title": "K采样器"
+        }
+    },
+    "5": {
+        "inputs": {
+            "width": "%width%",
+            "height": "%height%",
+            "batch_size": 1
+        },
+        "class_type": "EmptyLatentImage",
+        "_meta": {
+            "title": "空Latent"
+        }
+    },
+    "30": {
+        "inputs": {
+            "filename_prefix": "ComfyUI",
+            "images": [
+                "106",
+                0
+            ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+            "title": "保存图像"
+        }
+    },
+    "41": {
+        "inputs": {
+            "method": "from cond",
+            "model": [
+                "75",
+                0
+            ]
+        },
+        "class_type": "Support empty uncond",
+        "_meta": {
+            "title": "Support empty uncond"
+        }
+    },
+    "42": {
+        "inputs": {
+            "object_to_patch": "diffusion_model",
+            "residual_diff_threshold": 0.20000000000000004,
+            "start": 0,
+            "end": 1,
+            "max_consecutive_cache_hits": -1,
+            "model": [
+                "125",
+                1
+            ]
+        },
+        "class_type": "ApplyFBCacheOnModel",
+        "_meta": {
+            "title": "Apply First Block Cache"
+        }
+    },
+    "43": {
+        "inputs": {
+            "start": 0,
+            "end": 0.7000000000000002,
+            "conditioning": [
+                "75",
+                2
+            ]
+        },
+        "class_type": "ConditioningSetTimestepRange",
+        "_meta": {
+            "title": "设置条件时间"
+        }
+    },
+    "55": {
+        "inputs": {
+            "pipe": [
+                "91",
+                0
+            ]
+        },
+        "class_type": "easy pipeOut",
+        "_meta": {
+            "title": "节点束输出"
+        }
+    },
+    "75": {
+        "inputs": {
+            "positive": [
+                "76",
+                0
+            ],
+            "negative": [
+                "76",
+                1
+            ],
+            "打开可视化PromptUI": "",
+            "speak_and_recognation": {
+                "__value__": [
+                    false,
+                    true
+                ]
+            },
+            "model": [
+                "55",
+                1
+            ],
+            "clip": [
+                "55",
+                6
+            ]
+        },
+        "class_type": "WeiLinComfyUIPromptToLoras",
+        "_meta": {
+            "title": "别动 Lora和提示词加载"
+        }
+    },
+    "76": {
+        "inputs": {
+            "positive": "%prompt%",
+            "negative": "%negative_prompt%",
+            "打开可视化PromptUI": "",
+            "speak_and_recognation": {
+                "__value__": [
+                    false,
+                    true
+                ]
+            }
+        },
+        "class_type": "WeiLinPromptToString",
+        "_meta": {
+            "title": "提示词与Lora"
+        }
+    },
+    "91": {
+        "inputs": {
+            "ckpt_name": "%MODEL_NAME%",
+            "vae_name": "Baked VAE",
+            "clip_skip": -2,
+            "lora_name": "None",
+            "lora_model_strength": 0.7000000000000002,
+            "lora_clip_strength": 1.0000000000000002,
+            "resolution": "1024 x 1024",
+            "empty_latent_width": 512,
+            "empty_latent_height": 512,
+            "positive": [
+                "92",
+                0
+            ],
+            "negative": [
+                "92",
+                0
+            ],
+            "batch_size": 1,
+            "speak_and_recognation": {
+                "__value__": [
+                    false,
+                    true
+                ]
+            }
+        },
+        "class_type": "easy comfyLoader",
+        "_meta": {
+            "title": "简易加载器（Comfy）"
+        }
+    },
+    "92": {
+        "inputs": {
+            "value": ""
+        },
+        "class_type": "PrimitiveString",
+        "_meta": {
+            "title": "别动 伪提示词"
+        }
+    },
+    "106": {
+        "inputs": {
+            "samples": [
+                "3",
+                0
+            ],
+            "vae": [
+                "125",
+                5
+            ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+            "title": "VAE解码"
+        }
+    },
+    "122": {
+        "inputs": {
+            "pipe": [
+                "55",
+                0
+            ],
+            "model": [
+                "41",
+                0
+            ],
+            "pos": [
+                "75",
+                1
+            ],
+            "neg": [
+                "43",
+                0
+            ],
+            "latent": [
+                "55",
+                4
+            ],
+            "vae": [
+                "55",
+                5
+            ],
+            "clip": [
+                "55",
+                6
+            ],
+            "image": [
+                "55",
+                7
+            ]
+        },
+        "class_type": "easy pipeIn",
+        "_meta": {
+            "title": "节点束输入"
+        }
+    },
+    "125": {
+        "inputs": {
+            "pipe": [
+                "122",
+                0
+            ]
+        },
+        "class_type": "easy pipeOut",
+        "_meta": {
+            "title": "节点束输出"
+        }
+    }
+}
